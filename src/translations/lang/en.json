@@ -1033,6 +1033,7 @@
     "NAVIGATION_HELP": "Help",
     "NAVIGATION_NEW": "New",
     "NAVIGATION_MENU": "Menu",
-    "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now"
+    "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now.",
+    "DEMO_BUTTON_TEXT": "View Demo Mode"
   }
 }

@@ -1,4 +1,4 @@
-import { IS_DEV } from '@utils/environment';
+import { IS_DEV, IS_STAGING } from '@utils/environment';
 
 export type IFeatureFlags = typeof FEATURE_FLAGS;
 
@@ -16,7 +16,7 @@ export const FEATURE_FLAGS = {
   MYC_MEMBERSHIP: 'core',
   DOWNLOAD_DESKTOP_APP: 'core',
   OLD_NAVIGATION: !IS_DEV,
-  NEW_NAVIGATION: IS_DEV,
+  NEW_NAVIGATION: IS_DEV || IS_STAGING,
 
   /* Manage Assets */
   ADD_ACCOUNT: 'core',
