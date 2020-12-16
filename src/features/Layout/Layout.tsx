@@ -183,7 +183,6 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
   const [topHeight, setTopHeight] = useState(0);
 
   const topRef = useRef<any>(null);
-
   useLayoutEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       // Wrap with requestAnimationFrame to avoir loop limit exceeded error
@@ -209,7 +208,12 @@ const Layout = ({ config = {}, className = '', children, isDemoMode }: Props) =>
       {featureFlags.NEW_NAVIGATION && !isMobile && (
         <DesktopNav appRoutes={APP_ROUTES} current={pathname} />
       )}
-      <SMain className={className} bgColor={bgColor} newNav={featureFlags.NEW_NAVIGATION} isDemoMode={isDemoMode}>
+      <SMain
+        className={className}
+        bgColor={bgColor}
+        newNav={featureFlags.NEW_NAVIGATION}
+        isDemoMode={isDemoMode}
+      >
         {isDemoMode && (
           <Link to={ROUTE_PATHS.ADD_ACCOUNT.path}>
             <DemoBanner>
