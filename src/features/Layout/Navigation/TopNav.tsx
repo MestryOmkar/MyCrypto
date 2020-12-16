@@ -19,7 +19,7 @@ export const TopNav = ({ current, isMobile }: { current: string; isMobile: boole
       justifyContent="flex-end"
       ml={SPACING.BASE}
       mb={SPACING.BASE}
-      mt={SPACING.MD}
+      mt={SPACING.LG}
       mr={SPACING.XS}
     >
       {isMobile && <TopItem title="NAVIGATION_MENU" icon="nav-menu" left={true} />}

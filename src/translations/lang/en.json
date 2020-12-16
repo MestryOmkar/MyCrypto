@@ -1032,6 +1032,7 @@
     "NAVIGATION_JOIN": "Join",
     "NAVIGATION_HELP": "Help",
     "NAVIGATION_NEW": "New",
-    "NAVIGATION_MENU": "Menu"
+    "NAVIGATION_MENU": "Menu",
+    "DEMO_BANNER": "Viewing in DEMO MODE. To take action, add an account now"
   }
 }
