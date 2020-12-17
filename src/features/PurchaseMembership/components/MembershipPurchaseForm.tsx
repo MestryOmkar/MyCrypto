@@ -1,11 +1,20 @@
 import React, { useContext, useEffect } from 'react';
 
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { AppState, getIsDemoMode } from '@store';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
+import { connect, ConnectedProps } from 'react-redux';
 import styled from 'styled-components';
 import { number, object } from 'yup';
 
-import { AccountSelector, AmountInput, Button, InlineMessage } from '@components';
+import {
+  AccountSelector,
+  AmountInput,
+  Button,
+  DemoGatewayBanner,
+  InlineMessage
+} from '@components';
 import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
@@ -22,7 +31,7 @@ import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from '../config';
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from '../types';
 import MembershipSelector from './MembershipSelector';
 
-interface Props extends MembershipPurchaseState {
+interface MembershipProps extends MembershipPurchaseState {
   isSubmitting: boolean;
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
@@ -32,6 +41,7 @@ interface UIProps {
   network: Network;
   relevantAccounts: StoreAccount[];
   isSubmitting: boolean;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -56,7 +66,7 @@ const FormFieldSubmitButton = styled(Button)`
   }
 `;
 
-const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
+const MembershipForm = ({ isSubmitting, isDemoMode, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useNetworks();
   const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
@@ -67,6 +77,7 @@ const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
       isSubmitting={isSubmitting}
       network={network}
       relevantAccounts={relevantAccounts}
+      isDemoMode={isDemoMode}
       onComplete={onComplete}
     />
   );
@@ -76,6 +87,7 @@ export const MembershipFormUI = ({
   isSubmitting,
   network,
   relevantAccounts,
+  isDemoMode,
   onComplete
 }: UIProps) => {
   const { getAssetByUUID } = useAssets();
@@ -104,6 +116,7 @@ export const MembershipFormUI = ({
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner copy={translateRaw('DEMO_GATEWAY_BANNER')} />}
       <Formik
         enableReinitialize={true}
         initialValues={initialFormikValues}
@@ -221,7 +234,7 @@ export const MembershipFormUI = ({
               </FormFieldItem>
               <FormFieldSubmitButton
                 type="submit"
-                disabled={!isValid || !selectedAccount}
+                disabled={isDemoMode || !isValid || !selectedAccount}
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
@@ -241,4 +254,13 @@ export const MembershipFormUI = ({
   );
 };
 
-export default MembershipForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => bindActionCreators({}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & MembershipProps;
+
+export default connector(MembershipForm);
